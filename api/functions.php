@@ -74,6 +74,44 @@ function getUsers() {
 
 }
 
+function getUser($userParam) {
+	global $mysqli;
+
+	$id = mysqli_real_escape_string($mysqli, $userParam['id']);
+	$query = "SELECT user_id, username, fullname, email FROM users WHERE user_id='$id'";
+	$result = mysqli_query($mysqli, $query);
+	if ($result) {
+		if (mysqli_num_rows($result) == 1) {
+			$res = mysqli_fetch_all($result, MYSQLI_ASSOC);
+			$data = [
+				'status' => 200,
+				'message' => 'Fetched Successfully',
+				'data' => $res,
+			];
+
+			header("HTTP/1.1 200 Ok");
+			return json_encode($data);
+		} else {
+			$data = [
+				'status' => 404,
+				'message' => 'User Not Found',
+			];
+
+			header("HTTP/1.1 404 Not Found");
+			return json_encode($data);
+		}
+	} else {
+		$data = [
+			'status' => 500,
+			'message' => 'Internal Server Error',
+		];
+
+		header("HTTP/1.1 500 Internal Server Error");
+		return json_encode($data);
+	}
+
+}
+
 function createUser($userData) {
 	global $mysqli;
 

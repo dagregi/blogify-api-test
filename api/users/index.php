@@ -9,8 +9,13 @@ require "../functions.php";
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
 if ($requestMethod == "GET") {
-	$userList = getUsers();
-	echo $userList;
+	if (isset($_GET['id'])) {
+		$user = getUser($_GET);
+		echo $user;
+	} else {
+		$userList = getUsers();
+		echo $userList;
+	}
 } elseif ($requestMethod == "POST") {
 	$inputData = json_decode(file_get_contents("php://input"), true);
 	if (empty($inputData)) {
