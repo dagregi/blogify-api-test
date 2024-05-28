@@ -1,7 +1,7 @@
 <?php
 
 header('Access-Control-Allow-Origin:*');
-header('Access-Control-Allow-Method: GET, POST');
+header('Access-Control-Allow-Method: GET, POST, DELETE');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Request-With');
 
@@ -24,6 +24,9 @@ if ($requestMethod == "GET") {
 		$createUser = createUser($inputData);
 	}
 	echo $createUser;
+} elseif ($requestMethod == "DELETE") {
+	$deleteUser = deleteUser($_GET);
+	echo $deleteUser;
 } else {
 	$data = [
 		'status' => 405,

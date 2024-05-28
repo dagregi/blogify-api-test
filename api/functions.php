@@ -15,7 +15,7 @@ function getBlogs() {
 				'data' => $res,
 			];
 
-			header("HTTP/1.1 200 Ok");
+			header("HTTP/1.1 200 OK");
 			return json_encode($data);
 		} else {
 			$data = [
@@ -51,7 +51,7 @@ function getUsers() {
 				'data' => $res,
 			];
 
-			header("HTTP/1.1 200 Ok");
+			header("HTTP/1.1 200 OK");
 			return json_encode($data);
 		} else {
 			$data = [
@@ -89,7 +89,7 @@ function getUser($userParam) {
 				'data' => $res,
 			];
 
-			header("HTTP/1.1 200 Ok");
+			header("HTTP/1.1 200 OK");
 			return json_encode($data);
 		} else {
 			$data = [
@@ -153,6 +153,31 @@ function createUser($userData) {
 		}
 	}
 
+}
+
+function deleteUser($userParam) {
+	global $mysqli;
+
+	$id = mysqli_real_escape_string($mysqli, $userParam['id']);
+	$query = "DELETE FROM users WHERE user_id='$id' LIMIT 1";
+	$result = mysqli_query($mysqli, $query);
+	if ($result) {
+		$data = [
+			'status' => 200,
+			'message' => 'Deleted Successfully',
+		];
+
+		header("HTTP/1.1 200 OK");
+		return json_encode($data);
+	} else {
+		$data = [
+			'status' => 404,
+			'message' => 'User Not Found',
+		];
+
+		header("HTTP/1.1 404 Not Found");
+		return json_encode($data);
+	}
 }
 
 ?>
