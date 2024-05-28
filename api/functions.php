@@ -74,4 +74,47 @@ function getUsers() {
 
 }
 
+function createUser($userData) {
+	global $mysqli;
+
+	$username = mysqli_real_escape_string($mysqli, $userData['username']);
+	$email = mysqli_real_escape_string($mysqli, $userData['email']);
+	$fullname = mysqli_real_escape_string($mysqli, $userData['fullname']);
+	$password = mysqli_real_escape_string($mysqli, $userData['password']);
+	$password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+	$validate = empty(trim($username)) || empty(trim($email)) || empty(trim($fullname)) || empty(trim($password));
+	if ($validate) {
+		$data = [
+			'status' => 422,
+			'message' => 'Missing User Data',
+		];
+
+		header("HTTP/1.1 422 Unprocessable Entity");
+		return json_encode($data);
+	} else {
+		$query = "INSERT INTO users (username, fullname, email, password) VALUES ('$username', '$fullname', '$email', '$password_hash')";
+		$result = mysqli_query($mysqli, $query);
+
+		if ($result) {
+			$data = [
+				'status' => 201,
+				'message' => 'Created Successfully',
+			];
+
+			header("HTTP/1.1 201 Created");
+			return json_encode($data);
+		} else {
+			$data = [
+				'status' => 500,
+				'message' => 'Internal Server Error',
+			];
+
+			header("HTTP/1.1 500 Internal Server Error");
+			return json_encode($data);
+		}
+	}
+
+}
+
 ?>
