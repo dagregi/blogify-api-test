@@ -5,7 +5,7 @@ header('Access-Control-Allow-Method: GET, POST, DELETE');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Request-With');
 
-require "../functions.php";
+require "../userUtils.php";
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
 if ($requestMethod == "GET") {
